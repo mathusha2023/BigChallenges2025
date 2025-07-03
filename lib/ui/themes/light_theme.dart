@@ -6,13 +6,13 @@ class LightTheme extends BaseTheme {
   Color get backgroundColor => const Color.fromRGBO(255, 255, 255, 1);
 
   @override
-  Color get primaryAccent => const Color.fromRGBO(255, 221, 45, 1);
+  Color get primaryAccent => const Color.fromRGBO(235, 235, 235, 1);
 
   @override
-  Color get secondaryColor => const Color.fromARGB(255, 71, 167, 247);
+  Color get secondaryColor => const Color.fromARGB(255, 0, 100, 255);
 
   @override
-  Color get cardColor => const Color.fromARGB(255, 236, 236, 236);
+  Color get cardColor => const Color.fromARGB(255, 247, 247, 249);
 
   @override
   Color get primaryContent => const Color.fromRGBO(0, 0, 0, 1);

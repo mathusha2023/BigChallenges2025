@@ -11,10 +11,29 @@ abstract class BaseTheme {
     primaryColor: primaryContent,
     cardColor: cardColor,
     textTheme: TextTheme(
-      displayMedium: TextStyle(color: primaryContent),
-      displayLarge: TextStyle(color: primaryContent, fontSize: 17.5),
+      displaySmall: TextStyle(color: backgroundColor, fontSize: 12),
+      displayMedium: TextStyle(color: primaryContent, fontSize: 13),
+      displayLarge: TextStyle(color: primaryContent, fontSize: 14),
+      bodySmall: TextStyle(color: secondaryColor),
+      bodyMedium: TextStyle(color: primaryContent, fontSize: 16),
+      bodyLarge: TextStyle(color: secondaryColor),
+      titleSmall: TextStyle(color: secondaryColor),
+      titleMedium: TextStyle(color: secondaryColor),
+      titleLarge: TextStyle(color: secondaryColor),
     ),
-    cardTheme: CardThemeData(color: cardColor),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: secondaryColor),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: cardColor,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide.none,
+      ),
+      hintStyle: TextStyle(color: secondaryColor, fontSize: 14),
+      prefixIconColor: secondaryColor,
+    ),
+
+    cardTheme: CardThemeData(color: cardColor, shadowColor: Colors.transparent),
     buttonTheme: ButtonThemeData(
       buttonColor: cardColor,
       textTheme: ButtonTextTheme.primary,

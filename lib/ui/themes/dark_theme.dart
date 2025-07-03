@@ -6,7 +6,7 @@ class DarkTheme extends BaseTheme {
   Color get backgroundColor => const Color.fromRGBO(255, 255, 255, 1);
 
   @override
-  Color get primaryAccent => const Color.fromRGBO(255, 221, 45, 1);
+  Color get primaryAccent => const Color.fromRGBO(235, 235, 235, 1);
 
   @override
   Color get secondaryColor => const Color.fromARGB(255, 71, 167, 247);

@@ -1,3 +1,4 @@
+import 'package:bc_phthalmoscopy/ui/pages/patients_list_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("AAAS"));
+    return PatientsListPage();
   }
 }

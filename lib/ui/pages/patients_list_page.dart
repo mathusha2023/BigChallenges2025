@@ -1,6 +1,7 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_list_tile_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PatientsListPage extends StatefulWidget {
   const PatientsListPage({super.key});
@@ -74,6 +75,8 @@ class _PatientsListPageState extends State<PatientsListPage> {
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, size: 20),
                             hintText: "Поиск пациентов",
+                            hintStyle: theme.inputDecorationTheme.hintStyle
+                                ?.copyWith(color: theme.colorScheme.secondary),
                           ),
                         ),
                       ),
@@ -154,7 +157,9 @@ class _PatientsListPageState extends State<PatientsListPage> {
           color: Theme.of(context).colorScheme.secondary,
           size: 30,
         ),
-        onPressed: () {},
+        onPressed: () {
+          context.go("/add_patient");
+        },
       ),
     );
   }

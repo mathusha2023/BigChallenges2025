@@ -17,10 +17,10 @@ abstract class BaseTheme {
       displayLarge: TextStyle(color: primaryContent, fontSize: 14),
       bodySmall: TextStyle(color: secondaryColor),
       bodyMedium: TextStyle(color: primaryContent, fontSize: 16),
-      bodyLarge: TextStyle(color: secondaryColor),
-      titleSmall: TextStyle(color: secondaryColor),
+      bodyLarge: TextStyle(color: primaryContent, fontSize: 17),
+      titleSmall: TextStyle(color: secondaryColor, fontSize: 14),
       titleMedium: TextStyle(color: secondaryColor),
-      titleLarge: TextStyle(color: secondaryColor),
+      titleLarge: TextStyle(color: primaryContent, fontSize: 26),
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: secondaryColor),
     inputDecorationTheme: InputDecorationTheme(
@@ -30,7 +30,7 @@ abstract class BaseTheme {
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide.none,
       ),
-      hintStyle: TextStyle(color: secondaryColor, fontSize: 14),
+      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
       prefixIconColor: secondaryColor,
     ),
 

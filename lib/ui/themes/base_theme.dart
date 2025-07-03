@@ -8,6 +8,7 @@ abstract class BaseTheme {
   Color get cardColor;
   Brightness get brightness;
   ThemeData get themeData => ThemeData(
+    fontFamily: 'Huninn',
     primaryColor: primaryContent,
     cardColor: cardColor,
     textTheme: TextTheme(

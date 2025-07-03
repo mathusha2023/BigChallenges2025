@@ -61,33 +61,34 @@ class _PatientsListPageState extends State<PatientsListPage> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 height: _showHeader ? 45 : 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: TextField(
-                        style: theme.textTheme.bodyMedium,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.search,
-                            size: _showHeader ? 20 : 0,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: _showHeader ? 1 : 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: TextField(
+                          style: theme.textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, size: 20),
+                            hintText: "Поиск пациентов",
                           ),
-                          hintText: "Поиск пациентов",
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Theme.of(context).cardColor,
-                        child: Image(
-                          image: AssetImage("assets/images/doctor_icon.png"),
+                      GestureDetector(
+                        onTap: () {},
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: Image(
+                            image: AssetImage("assets/images/doctor_icon.png"),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 

@@ -18,7 +18,7 @@ abstract class BaseTheme {
       bodySmall: TextStyle(color: secondaryColor),
       bodyMedium: TextStyle(color: primaryContent, fontSize: 16),
       bodyLarge: TextStyle(color: primaryContent, fontSize: 17),
-      titleSmall: TextStyle(color: secondaryColor, fontSize: 14),
+      titleSmall: TextStyle(color: secondaryColor, fontSize: 16),
       titleMedium: TextStyle(color: secondaryColor),
       titleLarge: TextStyle(color: primaryContent, fontSize: 26),
     ),
@@ -57,6 +57,16 @@ abstract class BaseTheme {
     buttonTheme: ButtonThemeData(
       buttonColor: cardColor,
       textTheme: ButtonTextTheme.primary,
+    ),
+    checkboxTheme: CheckboxThemeData(
+      // Настройка формы
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      // Стиль для невыбранного состояния (черная обводка)
+      side: WidgetStateBorderSide.resolveWith(
+        (states) => BorderSide(width: 2, color: primaryContent),
+      ),
+      // Цвет галочки (синий)
+      checkColor: WidgetStateProperty.all(secondaryColor),
     ),
     colorScheme: ColorScheme(
       brightness: brightness,

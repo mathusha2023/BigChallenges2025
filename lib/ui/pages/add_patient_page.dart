@@ -17,6 +17,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
 
   int _selectedGender = 0;
 
+  @override
   void dispose() {
     _nameController.dispose();
     _dateController.dispose();

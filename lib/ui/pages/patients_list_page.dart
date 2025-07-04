@@ -1,6 +1,6 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_list_tile_widget.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide showBottomSheet;
 import 'package:go_router/go_router.dart';
 
 class PatientsListPage extends StatefulWidget {
@@ -15,6 +15,9 @@ class _PatientsListPageState extends State<PatientsListPage> {
   final ScrollController _scrollController = ScrollController();
   bool _showHeader = true;
   double _lastScrollOffset = 0;
+
+  bool? male = false;
+  bool? female = false;
 
   void fetch() async {
     _future = Future.delayed(
@@ -105,19 +108,19 @@ class _PatientsListPageState extends State<PatientsListPage> {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   height: _showHeader ? 15 : 0,
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Image(
+                  child: GestureDetector(
+                    onTap: () => _showFilterBottomSheet(context),
+                    child: Row(
+                      children: [
+                        Image(
                           width: 20,
                           height: 15,
                           image: AssetImage("assets/images/filter_icon.png"),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text("Фильтры", style: theme.textTheme.displayLarge),
-                    ],
+                        const SizedBox(width: 8),
+                        Text("Фильтры", style: theme.textTheme.displayLarge),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -165,6 +168,135 @@ class _PatientsListPageState extends State<PatientsListPage> {
           context.go("/add_patient");
         },
       ),
+    );
+  }
+
+  void _showFilterBottomSheet(BuildContext context) {
+    final theme = Theme.of(context);
+
+    showModalBottomSheet<void>(
+      context: context,
+      isDismissible: true,
+      isScrollControlled: true, // 1. Включаем управление прокруткой
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom:
+                MediaQuery.of(
+                  context,
+                ).viewInsets.bottom, // 2. Учитываем клавиатуру
+          ),
+          child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return IntrinsicHeight(
+                // 3. Используем IntrinsicHeight
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // 4. Главное - это строка
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Ваше содержимое без изменений
+                      Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Фильтры",
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: Text(
+                                "Отмена",
+                                style: theme.textTheme.titleSmall,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text("Пол", style: theme.textTheme.bodyLarge),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Text("Мужской", style: theme.textTheme.bodyLarge),
+                          Checkbox(
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            value: male,
+                            onChanged: (value) => setState(() => male = value),
+                          ),
+                          Text("Женский", style: theme.textTheme.bodyLarge),
+                          Checkbox(
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            value: female,
+                            onChanged:
+                                (value) => setState(() => female = value),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Text("Возраст", style: theme.textTheme.bodyLarge),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              maxLength: 3,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: "от",
+                                counterText: "",
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(" - "),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              maxLength: 3,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                hintText: "до",
+                                counterText: "",
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Применить'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

@@ -4,8 +4,13 @@ import 'package:bc_phthalmoscopy/ui/widgets/patient_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileBlockWidget extends StatefulWidget {
-  const UserProfileBlockWidget({super.key, required this.patient});
+  const UserProfileBlockWidget({
+    super.key,
+    required this.patient,
+    required this.height,
+  });
   final PatientListModel patient;
+  final double? height;
 
   @override
   State<UserProfileBlockWidget> createState() => _UserProfileBlockWidgetState();
@@ -18,6 +23,7 @@ class _UserProfileBlockWidgetState extends State<UserProfileBlockWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: widget.height,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,

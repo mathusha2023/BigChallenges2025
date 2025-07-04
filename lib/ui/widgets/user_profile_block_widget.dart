@@ -1,4 +1,5 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/check_eye_button_widget.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_icon_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class UserProfileBlockWidget extends StatefulWidget {
 
 class _UserProfileBlockWidgetState extends State<UserProfileBlockWidget> {
   late final patient = widget.patient;
+  int? _eye; // 0 - left, 1 - right
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,46 @@ class _UserProfileBlockWidgetState extends State<UserProfileBlockWidget> {
                 ),
               ),
             ],
+          ),
+          SizedBox(height: 30),
+          Text(
+            "Чтобы сделать новый снимок, переключите статус получения фото на активный",
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          SizedBox(height: 10),
+          SizedBox(
+            height: 35,
+            child: Row(
+              children: [
+                CheckEyeButtonWidget(
+                  isChecked: _eye == 0,
+                  title: "Правый",
+                  onTap: () {
+                    setState(() {
+                      if (_eye == 0) {
+                        _eye = null;
+                      } else {
+                        _eye = 0;
+                      }
+                    });
+                  },
+                ),
+                const SizedBox(width: 10),
+                CheckEyeButtonWidget(
+                  isChecked: _eye == 1,
+                  title: "Левый",
+                  onTap: () {
+                    setState(() {
+                      if (_eye == 1) {
+                        _eye = null;
+                      } else {
+                        _eye = 1;
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

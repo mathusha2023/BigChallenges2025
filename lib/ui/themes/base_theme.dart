@@ -15,7 +15,7 @@ abstract class BaseTheme {
       displaySmall: TextStyle(color: backgroundColor, fontSize: 12),
       displayMedium: TextStyle(color: primaryContent, fontSize: 13),
       displayLarge: TextStyle(color: primaryContent, fontSize: 14),
-      bodySmall: TextStyle(color: secondaryColor),
+      bodySmall: TextStyle(color: Colors.grey, fontSize: 15, height: 1),
       bodyMedium: TextStyle(color: primaryContent, fontSize: 16),
       bodyLarge: TextStyle(color: primaryContent, fontSize: 17),
       titleSmall: TextStyle(color: secondaryColor, fontSize: 16),
@@ -40,14 +40,14 @@ abstract class BaseTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15), // Закругление 15
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        // padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
     progressIndicatorTheme: ProgressIndicatorThemeData(color: secondaryColor),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: secondaryColor,
-        side: BorderSide(color: secondaryColor), // Цвет границы
+        side: BorderSide(color: Colors.transparent), // Цвет границы
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15), // Закругление 15
         ),

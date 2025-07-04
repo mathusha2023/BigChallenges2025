@@ -24,7 +24,8 @@ class _PatientsListPageState extends State<PatientsListPage> {
       Duration(seconds: 2),
       () => List.generate(
         20,
-        (int index) => PatientListModel("Иван Иванов", 47, 0, index),
+        (int index) =>
+            PatientListModel("Базин Алексей Сергеевич", 47, 0, index),
       ),
     );
   }
@@ -144,11 +145,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
                         },
                       );
                     }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    );
+                    return Center(child: CircularProgressIndicator());
                   },
                 ),
               ),

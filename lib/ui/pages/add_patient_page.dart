@@ -128,6 +128,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
 
   void _openDatePicker(BuildContext context) {
     BottomPicker.date(
+      dismissable: true,
       pickerTitle: Text(
         'Выберите дату',
         style: Theme.of(context).textTheme.bodyLarge,

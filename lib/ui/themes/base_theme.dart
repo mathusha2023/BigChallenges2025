@@ -43,6 +43,7 @@ abstract class BaseTheme {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       ),
     ),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: secondaryColor),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: secondaryColor,

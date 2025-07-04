@@ -33,7 +33,26 @@ abstract class BaseTheme {
       hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
       prefixIconColor: secondaryColor,
     ),
-
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: secondaryColor, // Цвет текста и обводки
+        side: BorderSide(color: secondaryColor), // Цвет границы
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Закругление 15
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: secondaryColor,
+        side: BorderSide(color: secondaryColor), // Цвет границы
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Закругление 15
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      ),
+    ),
     cardTheme: CardThemeData(color: cardColor, shadowColor: Colors.transparent),
     buttonTheme: ButtonThemeData(
       buttonColor: cardColor,

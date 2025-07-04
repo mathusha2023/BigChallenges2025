@@ -18,7 +18,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
 
   void fetch() async {
     _future = Future.delayed(
-      Duration(seconds: 1),
+      Duration(seconds: 2),
       () => List.generate(
         20,
         (int index) => PatientListModel("Иван Иванов", 47, 0, index),
@@ -141,7 +141,11 @@ class _PatientsListPageState extends State<PatientsListPage> {
                         },
                       );
                     }
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    );
                   },
                 ),
               ),

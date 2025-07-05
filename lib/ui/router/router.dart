@@ -24,10 +24,15 @@ final router = GoRouter(
             return PatientInfoPage(patient: patient);
           },
         ),
-        GoRoute(path: "/profile", builder: (context, state) => ProfilePage()),
         GoRoute(
-          path: "/devices_list",
-          builder: (context, state) => DevicesListPage(),
+          path: "/profile",
+          builder: (context, state) => ProfilePage(),
+          routes: [
+            GoRoute(
+              path: "/devices_list",
+              builder: (context, state) => DevicesListPage(),
+            ),
+          ],
         ),
       ],
     ),

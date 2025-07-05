@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
                 image: "assets/images/device_icon.png",
                 title: "Устройства",
                 onTap: () {
-                  context.go("/devices_list");
+                  context.go("/profile/devices_list");
                 },
               ),
               ProfileTileWidget(

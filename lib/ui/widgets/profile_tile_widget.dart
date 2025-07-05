@@ -20,6 +20,7 @@ class ProfileTileWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
+          splashColor: Colors.transparent,
           leading: Container(
             padding: const EdgeInsets.all(13),
             decoration: BoxDecoration(

@@ -16,7 +16,6 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   Future? _future;
   final ScrollController _scrollController = ScrollController();
   bool _showProfile = true;
-  double _lastScrollOffset = 0;
 
   @override
   void initState() {
@@ -32,7 +31,6 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
           _showProfile = true;
         });
       }
-      _lastScrollOffset = currentOffset;
     });
   }
 

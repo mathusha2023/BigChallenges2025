@@ -52,6 +52,7 @@ abstract class BaseTheme {
           borderRadius: BorderRadius.circular(15), // Закругление 15
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shadowColor: Colors.transparent,
       ),
     ),
     cardTheme: CardThemeData(color: cardColor, shadowColor: Colors.transparent),

@@ -89,8 +89,9 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                             mainAxisSpacing: 8,
                             crossAxisSpacing: 5,
                           ),
-                      itemCount: 120,
+                      itemCount: 12,
                       controller: _scrollController,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder:
                           (context, index) => Container(
                             decoration: BoxDecoration(

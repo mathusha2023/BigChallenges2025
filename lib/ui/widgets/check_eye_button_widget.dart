@@ -20,6 +20,9 @@ class CheckEyeButtonWidget extends StatelessWidget {
           onPressed: onTap,
           style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
             padding: WidgetStatePropertyAll(EdgeInsets.zero),
+            textStyle: WidgetStatePropertyAll(
+              Theme.of(context).textTheme.displayLarge,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -34,7 +37,11 @@ class CheckEyeButtonWidget extends StatelessWidget {
           onPressed: onTap,
           style: Theme.of(context).elevatedButtonTheme.style?.copyWith(
             padding: WidgetStatePropertyAll(EdgeInsets.zero),
-            backgroundColor: WidgetStatePropertyAll(Colors.grey),
+            backgroundColor: WidgetStatePropertyAll(Colors.white70),
+            foregroundColor: WidgetStatePropertyAll(Colors.black),
+            textStyle: WidgetStatePropertyAll(
+              Theme.of(context).textTheme.displayLarge,
+            ),
           ),
           child: Text(title),
         ),

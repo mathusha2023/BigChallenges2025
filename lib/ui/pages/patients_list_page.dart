@@ -85,7 +85,9 @@ class _PatientsListPageState extends State<PatientsListPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          context.go("/profile");
+                        },
                         child: CircleAvatar(
                           radius: 20,
                           backgroundColor: Theme.of(context).cardColor,

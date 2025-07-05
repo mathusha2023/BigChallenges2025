@@ -5,11 +5,11 @@ class PatientIconWidget extends StatelessWidget {
     super.key,
     required this.width,
     required this.height,
-    this.isMale = true,
+    required this.image,
   });
 
   final double width, height;
-  final bool isMale;
+  final String image;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +23,7 @@ class PatientIconWidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: Padding(
         padding: const EdgeInsets.only(top: 10),
-        child: Image(
-          image: AssetImage(
-            isMale
-                ? "assets/images/male_icon.png"
-                : "assets/images/female_icon.png",
-          ),
-        ),
+        child: Image(image: AssetImage(image)),
       ),
     );
   }

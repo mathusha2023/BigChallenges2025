@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key});
+  MyAppBar({super.key, this.title});
+
+  String? title;
 
   @override
   Size get preferredSize => Size.fromHeight(56); // or any other size you want
@@ -37,6 +39,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
+      title:
+          title == null
+              ? null
+              : Text(title!, style: Theme.of(context).textTheme.titleMedium),
+      centerTitle: true,
     );
   }
 }

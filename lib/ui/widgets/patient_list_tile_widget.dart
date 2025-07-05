@@ -3,17 +3,10 @@ import 'package:bc_phthalmoscopy/ui/widgets/patient_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class PatientListTileWidget extends StatefulWidget {
+class PatientListTileWidget extends StatelessWidget {
   const PatientListTileWidget({super.key, required this.patient});
 
   final PatientListModel patient;
-
-  @override
-  State<PatientListTileWidget> createState() => _PatientListTileWidgetState();
-}
-
-class _PatientListTileWidgetState extends State<PatientListTileWidget> {
-  late final PatientListModel patient = widget.patient;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +24,10 @@ class _PatientListTileWidgetState extends State<PatientListTileWidget> {
                 PatientIconWidget(
                   width: 80,
                   height: 94,
-                  isMale: patient.gender == 0,
+                  image:
+                      patient.gender == 0
+                          ? "assets/images/male_icon.png"
+                          : "assets/images/female_icon.png",
                 ),
                 Expanded(
                   child: Padding(

@@ -19,7 +19,7 @@ abstract class BaseTheme {
       bodyMedium: TextStyle(color: primaryContent, fontSize: 16),
       bodyLarge: TextStyle(color: primaryContent, fontSize: 17),
       titleSmall: TextStyle(color: secondaryColor, fontSize: 16),
-      titleMedium: TextStyle(color: secondaryColor),
+      titleMedium: TextStyle(color: secondaryColor, fontSize: 18),
       titleLarge: TextStyle(color: primaryContent, fontSize: 26),
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: secondaryColor),

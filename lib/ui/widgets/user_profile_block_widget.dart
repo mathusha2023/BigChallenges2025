@@ -37,7 +37,10 @@ class _UserProfileBlockWidgetState extends State<UserProfileBlockWidget> {
               PatientIconWidget(
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: MediaQuery.of(context).size.height * 0.18,
-                isMale: patient.gender == 0,
+                image:
+                    patient.gender == 0
+                        ? "assets/images/male_icon.png"
+                        : "assets/images/female_icon.png",
               ),
               Expanded(
                 // 1. Добавляем Expanded

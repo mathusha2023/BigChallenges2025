@@ -1,4 +1,5 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/accept_delete_dialog.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_floating_button.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_list_tile_widget.dart';
 import 'package:flutter/material.dart' hide showBottomSheet;
@@ -16,6 +17,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
   final ScrollController _scrollController = ScrollController();
   bool _showHeader = true;
   double _lastScrollOffset = 0;
+  List<PatientListModel> _patients = [];
 
   bool? male = false;
   bool? female = false;
@@ -24,7 +26,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
     _future = Future.delayed(
       Duration(seconds: 2),
       () => List.generate(
-        20,
+        10,
         (int index) =>
             PatientListModel("Базин Алексей Сергеевич", 47, 0, index),
       ),
@@ -52,6 +54,15 @@ class _PatientsListPageState extends State<PatientsListPage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _removePatient(int index) {
+    setState(() {
+      _patients.removeAt(index);
+      if (_patients.length < 7 && !_showHeader) {
+        _showHeader = true;
+      }
+    });
   }
 
   @override
@@ -135,14 +146,40 @@ class _PatientsListPageState extends State<PatientsListPage> {
                   future: _future,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      _patients = snapshot.data!;
+
+                      if (_patients.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "Нет пациентов",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        );
+                      }
                       return ListView.builder(
                         controller: _scrollController,
-                        itemCount: snapshot.data!.length,
+                        itemCount: _patients.length,
                         itemBuilder: (context, index) {
+                          PatientListModel p = _patients[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 1),
-                            child: PatientListTileWidget(
-                              patient: snapshot.data![index],
+                            child: Dismissible(
+                              key: Key(p.id.toString()),
+                              direction: DismissDirection.endToStart,
+                              confirmDismiss: (direction) async {
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AcceptDeleteDialog(
+                                      text: "Удалить этого пациента?",
+                                    );
+                                  },
+                                );
+                              },
+                              onDismissed: (direction) {
+                                _removePatient(index);
+                              },
+                              child: PatientListTileWidget(patient: p),
                             ),
                           );
                         },

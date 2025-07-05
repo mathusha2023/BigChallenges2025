@@ -5,6 +5,7 @@ import 'package:bc_phthalmoscopy/ui/pages/devices_list_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/home_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/patient_info_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/profile_page.dart';
+import 'package:bc_phthalmoscopy/ui/pages/scan_qr_page.dart';
 import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
@@ -36,6 +37,12 @@ final router = GoRouter(
                 GoRoute(
                   path: "/add_device",
                   builder: (context, state) => AddDevicePage(),
+                  routes: [
+                    GoRoute(
+                      path: "/scan_qr",
+                      builder: (context, state) => ScanQrPage(),
+                    ),
+                  ],
                 ),
               ],
             ),

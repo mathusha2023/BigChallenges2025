@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  MyAppBar({super.key, this.title});
+  MyAppBar({super.key, this.title, this.isTransparent = false, this.textColor});
 
   String? title;
+  bool isTransparent = false;
+  Color? textColor;
 
   @override
   Size get preferredSize => Size.fromHeight(56); // or any other size you want
@@ -12,6 +14,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return AppBar(
+      backgroundColor:
+          isTransparent ? Colors.transparent : theme.colorScheme.surface,
       automaticallyImplyLeading: false,
       leadingWidth: 100, // Фиксированная ширина для leading
       leading: GestureDetector(
@@ -24,13 +28,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Icon(
                 Icons.arrow_back_ios_new_outlined,
-                color: theme.colorScheme.secondary,
+                color: textColor ?? theme.colorScheme.secondary,
                 size: 20,
               ),
               const SizedBox(width: 4), // Отступ между иконкой и текстом
               Text(
                 "Назад",
                 style: theme.textTheme.titleSmall?.copyWith(
+                  color: textColor ?? theme.colorScheme.secondary,
                   overflow:
                       TextOverflow.visible, // Предотвращаем обрезку текста
                 ),

@@ -65,14 +65,19 @@ class _AddDevicePageState extends State<AddDevicePage> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(13),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    child: Image(
-                      image: AssetImage('assets/images/qr_icon.png'),
+                  GestureDetector(
+                    onTap: () {
+                      context.go("/profile/devices_list/add_device/scan_qr");
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(13),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      child: Image(
+                        image: AssetImage('assets/images/qr_icon.png'),
+                      ),
                     ),
                   ),
                 ],

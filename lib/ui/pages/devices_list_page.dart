@@ -1,7 +1,9 @@
 import 'package:bc_phthalmoscopy/data/device_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/device_list_tile_widget.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/my_floating_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DevicesListPage extends StatelessWidget {
   DevicesListPage({super.key});
@@ -34,6 +36,11 @@ class DevicesListPage extends StatelessWidget {
             },
           ),
         ),
+      ),
+      floatingActionButton: MyFloatingButton(
+        onPressed: () {
+          context.go("/profile/devices_list/add_device");
+        },
       ),
     );
   }

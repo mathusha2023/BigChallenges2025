@@ -67,6 +67,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
                     width: MediaQuery.of(context).size.width - 40 - 50 - 10,
                     child: ElevatedButton(
                       onPressed: () {
+                        if (_codeController.text.isEmpty) return;
                         context.pop();
                       },
 

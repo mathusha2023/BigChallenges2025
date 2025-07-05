@@ -25,6 +25,12 @@ class DevicesListPage extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final devices = snapshot.data as List<DeviceListModel>;
+                if (devices.isEmpty) {
+                  return Text(
+                    "Нет устройств",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  );
+                }
                 return ListView.builder(
                   itemCount: devices.length,
                   itemBuilder:

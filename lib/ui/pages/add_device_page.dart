@@ -3,16 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class AddDevicePage extends StatefulWidget {
-  const AddDevicePage({super.key});
+  const AddDevicePage({super.key, this.code});
+
+  final String? code;
 
   @override
   State<AddDevicePage> createState() => _AddDevicePageState();
 }
 
 class _AddDevicePageState extends State<AddDevicePage> {
+  final TextEditingController _codeController = TextEditingController();
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
+    if (widget.code != null) _codeController.text = widget.code!;
+
+    print("Controller: ${_codeController.text}");
 
     return Scaffold(
       appBar: MyAppBar(),
@@ -37,6 +51,7 @@ class _AddDevicePageState extends State<AddDevicePage> {
             Text('ID устройства', style: theme.textTheme.bodyLarge),
             const SizedBox(height: 8),
             TextField(
+              controller: _codeController,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(hintText: "000000000000"),
             ),

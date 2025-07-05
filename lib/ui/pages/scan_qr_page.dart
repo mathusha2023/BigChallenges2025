@@ -1,6 +1,7 @@
 import 'package:bc_phthalmoscopy/ui/widgets/dark_qr_code_background.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ScanQrPage extends StatefulWidget {
@@ -20,7 +21,9 @@ class _ScanQrPageState extends State<ScanQrPage> {
         // 1. Сканер на весь экран
         MobileScanner(
           onDetect: (result) {
-            print(result.barcodes.first.rawValue);
+            String code = result.barcodes.first.rawValue ?? "";
+            print("From scanner:$code");
+            context.go("/profile/devices_list/add_device", extra: code);
           },
         ),
 

@@ -36,7 +36,11 @@ final router = GoRouter(
               routes: [
                 GoRoute(
                   path: "/add_device",
-                  builder: (context, state) => AddDevicePage(),
+                  builder: (context, state) {
+                    final code = state.extra as String?;
+                    print("From router: $code");
+                    return AddDevicePage(code: code);
+                  },
                   routes: [
                     GoRoute(
                       path: "/scan_qr",

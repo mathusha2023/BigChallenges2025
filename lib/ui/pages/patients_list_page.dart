@@ -19,14 +19,16 @@ class _PatientsListPageState extends State<PatientsListPage> {
   double _lastScrollOffset = 0;
   List<PatientListModel> _patients = [];
 
-  bool? male = false;
-  bool? female = false;
+  bool? male = true;
+  bool? female = true;
+
+  final FocusNode _searchFocusNode = FocusNode(); // Добавляем FocusNode
 
   void fetch() async {
     _future = Future.delayed(
       Duration(seconds: 2),
       () => List.generate(
-        10,
+        20,
         (int index) =>
             PatientListModel("Базин Алексей Сергеевич", 47, 0, index),
       ),
@@ -53,6 +55,8 @@ class _PatientsListPageState extends State<PatientsListPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchFocusNode.dispose(); // Не забываем освободить ресурсы
+
     super.dispose();
   }
 
@@ -68,135 +72,142 @@ class _PatientsListPageState extends State<PatientsListPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              // Анимированный заголовок
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: _showHeader ? 45 : 0,
-                child: AnimatedOpacity(
+    return GestureDetector(
+      onTapDown: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                // Анимированный заголовок
+                AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  opacity: _showHeader ? 1 : 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        child: TextField(
-                          style: theme.textTheme.bodyMedium,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, size: 20),
-                            hintText: "Поиск пациентов",
-                            hintStyle: theme.inputDecorationTheme.hintStyle
-                                ?.copyWith(color: theme.colorScheme.secondary),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          context.go("/profile");
-                        },
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Theme.of(context).cardColor,
-                          child: Image(
-                            image: AssetImage("assets/images/doctor_icon.png"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Фильтры
-              AnimatedPadding(
-                duration: const Duration(milliseconds: 200),
-                padding: EdgeInsets.only(
-                  top: _showHeader ? 10 : 0,
-                  bottom: _showHeader ? 12 : 0,
-                ), // Уменьшенный отступ
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: _showHeader ? 15 : 0,
-                  child: GestureDetector(
-                    onTap: () => _showFilterBottomSheet(context),
+                  height: _showHeader ? 45 : 0,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: _showHeader ? 1 : 0,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Image(
-                          width: 20,
-                          height: 15,
-                          image: AssetImage("assets/images/filter_icon.png"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: TextField(
+                            style: theme.textTheme.bodyMedium,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.search, size: 20),
+                              hintText: "Поиск пациентов",
+                              hintStyle: theme.inputDecorationTheme.hintStyle
+                                  ?.copyWith(
+                                    color: theme.colorScheme.secondary,
+                                  ),
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: 8),
-                        Text("Фильтры", style: theme.textTheme.displayLarge),
+                        GestureDetector(
+                          onTap: () {
+                            context.go("/profile");
+                          },
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Theme.of(context).cardColor,
+                            child: Image(
+                              image: AssetImage(
+                                "assets/images/doctor_icon.png",
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ),
 
-              // Список пациентов
-              Expanded(
-                child: FutureBuilder(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      _patients = snapshot.data!;
-
-                      if (_patients.isEmpty) {
-                        return Center(
-                          child: Text(
-                            "Нет пациентов",
-                            style: Theme.of(context).textTheme.bodyLarge,
+                // Фильтры
+                AnimatedPadding(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.only(
+                    top: _showHeader ? 10 : 0,
+                    bottom: _showHeader ? 12 : 0,
+                  ), // Уменьшенный отступ
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    height: _showHeader ? 15 : 0,
+                    child: GestureDetector(
+                      onTap: () => _showFilterBottomSheet(context),
+                      child: Row(
+                        children: [
+                          Image(
+                            width: 20,
+                            height: 15,
+                            image: AssetImage("assets/images/filter_icon.png"),
                           ),
-                        );
-                      }
-                      return ListView.builder(
-                        controller: _scrollController,
-                        itemCount: _patients.length,
-                        itemBuilder: (context, index) {
-                          PatientListModel p = _patients[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 1),
-                            child: Dismissible(
-                              key: Key(p.id.toString()),
-                              direction: DismissDirection.endToStart,
-                              confirmDismiss: (direction) async {
-                                return await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AcceptDeleteDialog(
-                                      text: "Удалить этого пациента?",
-                                    );
-                                  },
-                                );
-                              },
-                              onDismissed: (direction) {
-                                _removePatient(index);
-                              },
-                              child: PatientListTileWidget(patient: p),
+                          const SizedBox(width: 8),
+                          Text("Фильтры", style: theme.textTheme.displayLarge),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Список пациентов
+                Expanded(
+                  child: FutureBuilder(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        _patients = snapshot.data!;
+
+                        if (_patients.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "Нет пациентов",
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           );
-                        },
-                      );
-                    }
-                    return Center(child: CircularProgressIndicator());
-                  },
+                        }
+                        return ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _patients.length,
+                          itemBuilder: (context, index) {
+                            PatientListModel p = _patients[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 1),
+                              child: Dismissible(
+                                key: Key(p.id.toString()),
+                                direction: DismissDirection.endToStart,
+                                confirmDismiss: (direction) async {
+                                  return await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AcceptDeleteDialog(
+                                        text: "Удалить этого пациента?",
+                                      );
+                                    },
+                                  );
+                                },
+                                onDismissed: (direction) {
+                                  _removePatient(index);
+                                },
+                                child: PatientListTileWidget(patient: p),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: MyFloatingButton(
-        onPressed: () {
-          context.go("/add_patient");
-        },
+        floatingActionButton: MyFloatingButton(
+          onPressed: () {
+            context.go("/add_patient");
+          },
+        ),
       ),
     );
   }

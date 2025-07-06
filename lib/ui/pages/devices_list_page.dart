@@ -14,20 +14,20 @@ class DevicesListPage extends StatefulWidget {
 }
 
 class _DevicesListPageState extends State<DevicesListPage> {
-  late Future<List<DeviceListModel>> _future;
+  static Future<List<DeviceListModel>>? _future;
   List<DeviceListModel> _devices = [];
 
   @override
   void initState() {
     super.initState();
-    _loadDevices();
+    fetch();
   }
 
-  void _loadDevices() {
+  void fetch() async {
     _future = Future.delayed(
       Duration(seconds: 1),
       () => List.generate(
-        3,
+        1,
         (index) => DeviceListModel(deviceId: "1281928371$index"),
       ),
     );

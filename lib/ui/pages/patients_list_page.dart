@@ -1,5 +1,6 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/accept_delete_dialog.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_filter_bottom_sheet.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_floating_button.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_list_tile_widget.dart';
 import 'package:flutter/material.dart' hide showBottomSheet;
@@ -15,12 +16,18 @@ class PatientsListPage extends StatefulWidget {
 class _PatientsListPageState extends State<PatientsListPage> {
   static Future? _future;
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _minAgeController = TextEditingController();
+  final TextEditingController _maxAgeController = TextEditingController();
   bool _showHeader = true;
   double _lastScrollOffset = 0;
   List<PatientListModel> _patients = [];
+  String _search = "";
+  int _minAge = 0;
+  int _maxAge = 999;
 
-  bool? male = true;
-  bool? female = true;
+  bool male = true;
+  bool female = true;
 
   final FocusNode _searchFocusNode = FocusNode(); // Добавляем FocusNode
 
@@ -28,7 +35,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
     _future = Future.delayed(
       Duration(seconds: 2),
       () => List.generate(
-        20,
+        15,
         (int index) =>
             PatientListModel("Базин Алексей Сергеевич", 47, 0, index),
       ),
@@ -42,30 +49,79 @@ class _PatientsListPageState extends State<PatientsListPage> {
 
     _scrollController.addListener(() {
       final currentOffset = _scrollController.offset;
-      if (currentOffset > _lastScrollOffset + 10 && currentOffset > 50) {
+      if (currentOffset > _lastScrollOffset + 10 && currentOffset > 30) {
         if (_showHeader) setState(() => _showHeader = false);
       } else if (currentOffset < _lastScrollOffset - 10 ||
           currentOffset <= 30) {
         if (!_showHeader) setState(() => _showHeader = true);
       }
       _lastScrollOffset = currentOffset;
+
+      // Добавляем проверку при достижении верха списка
+      if (_scrollController.offset <= 0 && !_showHeader) {
+        setState(() => _showHeader = true);
+      }
     });
+
+    _searchController.addListener(() {
+      if (_searchController.text.isEmpty) {
+        _searchPatient("");
+      }
+    });
+    _minAgeController.text = _minAge.toString();
+    _maxAgeController.text = _maxAge.toString();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     _searchFocusNode.dispose(); // Не забываем освободить ресурсы
-
+    _searchController.dispose();
+    _maxAgeController.dispose();
+    _minAgeController.dispose();
     super.dispose();
   }
 
   void _removePatient(int index) {
     setState(() {
       _patients.removeAt(index);
-      if (_patients.length < 7 && !_showHeader) {
-        _showHeader = true;
+      if (_scrollController.offset <= 0 && !_showHeader) {
+        setState(() => _showHeader = true);
       }
+    });
+  }
+
+  void _searchPatient(value) {
+    setState(() {
+      _search = value;
+    });
+  }
+
+  List<PatientListModel> get _filterPatients {
+    List allowedGender = [];
+    if (male) {
+      allowedGender.add(0);
+    }
+    if (female) {
+      allowedGender.add(1);
+    }
+    return _patients
+        .where(
+          (element) =>
+              element.name.contains(_search) &&
+              allowedGender.contains(element.gender) &&
+              element.age >= _minAge &&
+              element.age <= _maxAge,
+        )
+        .toList();
+  }
+
+  void _filter(bool localMale, bool localFemale) {
+    setState(() {
+      _minAge = int.parse(_minAgeController.text);
+      _maxAge = int.parse(_maxAgeController.text);
+      male = localMale;
+      female = localFemale;
     });
   }
 
@@ -93,9 +149,16 @@ class _PatientsListPageState extends State<PatientsListPage> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.75,
                           child: TextField(
+                            controller: _searchController,
+                            onSubmitted: _searchPatient,
                             style: theme.textTheme.bodyMedium,
                             decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search, size: 20),
+                              prefixIcon: GestureDetector(
+                                onTap:
+                                    () =>
+                                        _searchPatient(_searchController.text),
+                                child: Icon(Icons.search, size: 20),
+                              ),
                               hintText: "Поиск пациентов",
                               hintStyle: theme.inputDecorationTheme.hintStyle
                                   ?.copyWith(
@@ -134,7 +197,15 @@ class _PatientsListPageState extends State<PatientsListPage> {
                     duration: const Duration(milliseconds: 200),
                     height: _showHeader ? 15 : 0,
                     child: GestureDetector(
-                      onTap: () => _showFilterBottomSheet(context),
+                      onTap:
+                          () => showFilterBottomSheet(
+                            context,
+                            _filter,
+                            male,
+                            female,
+                            _minAgeController,
+                            _maxAgeController,
+                          ),
                       child: Row(
                         children: [
                           Image(
@@ -157,8 +228,9 @@ class _PatientsListPageState extends State<PatientsListPage> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         _patients = snapshot.data!;
+                        List<PatientListModel> filtered = _filterPatients;
 
-                        if (_patients.isEmpty) {
+                        if (filtered.isEmpty) {
                           return Center(
                             child: Text(
                               "Нет пациентов",
@@ -166,11 +238,12 @@ class _PatientsListPageState extends State<PatientsListPage> {
                             ),
                           );
                         }
+
                         return ListView.builder(
                           controller: _scrollController,
-                          itemCount: _patients.length,
+                          itemCount: filtered.length,
                           itemBuilder: (context, index) {
-                            PatientListModel p = _patients[index];
+                            PatientListModel p = filtered[index];
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 1),
                               child: Dismissible(
@@ -209,135 +282,6 @@ class _PatientsListPageState extends State<PatientsListPage> {
           },
         ),
       ),
-    );
-  }
-
-  void _showFilterBottomSheet(BuildContext context) {
-    final theme = Theme.of(context);
-
-    showModalBottomSheet<void>(
-      context: context,
-      isDismissible: true,
-      isScrollControlled: true, // 1. Включаем управление прокруткой
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom:
-                MediaQuery.of(
-                  context,
-                ).viewInsets.bottom, // 2. Учитываем клавиатуру
-          ),
-          child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return IntrinsicHeight(
-                // 3. Используем IntrinsicHeight
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min, // 4. Главное - это строка
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Ваше содержимое без изменений
-                      Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "Фильтры",
-                              style: theme.textTheme.bodyLarge,
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () => Navigator.pop(context),
-                              child: Text(
-                                "Отмена",
-                                style: theme.textTheme.titleSmall,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Text("Пол", style: theme.textTheme.bodyLarge),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Text("Мужской", style: theme.textTheme.bodyLarge),
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: male,
-                            onChanged: (value) => setState(() => male = value),
-                          ),
-                          Text("Женский", style: theme.textTheme.bodyLarge),
-                          Checkbox(
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            value: female,
-                            onChanged:
-                                (value) => setState(() => female = value),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Text("Возраст", style: theme.textTheme.bodyLarge),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              maxLength: 3,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: "от",
-                                counterText: "",
-                                isDense: true,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(" - "),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextField(
-                              maxLength: 3,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: "до",
-                                counterText: "",
-                                isDense: true,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Применить'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        );
-      },
     );
   }
 }

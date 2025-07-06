@@ -1,4 +1,4 @@
-extension StringExtension on String {
+extension TruncateToWords on String {
   /// Обрезает строку до указанного количества слов
   /// Если строка содержит меньше слов, возвращается исходная строка
   String truncateToWords(int maxWords) {
@@ -10,5 +10,11 @@ extension StringExtension on String {
 
     // Берем первые maxWords слов и соединяем обратно в строку
     return words.take(maxWords).join(' ');
+  }
+}
+
+extension IntParsing on String {
+  bool isInteger() {
+    return RegExp(r'^[+]?\d+$').hasMatch(this);
   }
 }

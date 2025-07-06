@@ -14,6 +14,7 @@ class AddPatientPage extends StatefulWidget {
 class _AddPatientPageState extends State<AddPatientPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  DateTime? _selectedDate;
 
   int _selectedGender = 0;
 
@@ -134,7 +135,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
         style: Theme.of(context).textTheme.bodyLarge,
       ),
       dateOrder: DatePickerDateOrder.dmy,
-      initialDateTime: DateTime.now(),
+      initialDateTime: _selectedDate ?? DateTime.now(),
       maxDateTime: DateTime.now(),
       minDateTime: DateTime(1900),
       pickerTextStyle: Theme.of(context).textTheme.displayLarge ?? TextStyle(),
@@ -150,6 +151,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
       ),
       onSubmit: (value) {
         setState(() {
+          _selectedDate = value;
           _dateController.text =
               "${value.day.toString().padLeft(2, '0')}.${value.month.toString().padLeft(2, '0')}.${value.year.toString().padLeft(4, '0')}";
         });

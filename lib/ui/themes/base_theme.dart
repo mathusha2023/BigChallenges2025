@@ -55,7 +55,11 @@ abstract class BaseTheme {
         shadowColor: Colors.transparent,
       ),
     ),
-    cardTheme: CardThemeData(color: cardColor, shadowColor: Colors.transparent),
+    cardTheme: CardThemeData(
+      color: cardColor,
+      shadowColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+    ),
     buttonTheme: ButtonThemeData(
       buttonColor: cardColor,
       textTheme: ButtonTextTheme.primary,

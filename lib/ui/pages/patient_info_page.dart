@@ -1,5 +1,9 @@
+import 'package:bc_phthalmoscopy/data/eye_enum.dart';
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
+import 'package:bc_phthalmoscopy/data/snapshot_edit_list_model.dart';
+import 'package:bc_phthalmoscopy/data/snapshot_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/patient_snapshot_tile_widget.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/user_profile_block_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +20,12 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
   Future? _future;
   final ScrollController _scrollController = ScrollController();
   bool _showProfile = true;
+  List<SnapshotListModel> _snapshots = [];
 
   @override
   void initState() {
+    fetch();
+
     super.initState();
     _scrollController.addListener(() {
       final currentOffset = _scrollController.offset;
@@ -32,6 +39,33 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
         });
       }
     });
+  }
+
+  void fetch() async {
+    _future = Future.delayed(
+      Duration(seconds: 1),
+      () => List.generate(
+        500,
+        (index) => SnapshotListModel(
+          id: index,
+          patientId: patient.id,
+          diagnosis:
+              "ДЗН серый, границы четкие, форма правильная, размер нормальный. Экскавация нормальная, в центре. Сосудистый пучок расположен центрально. Ход, извитость, бифуркация и калибр артерий и вен не изменены. Макулярный рефлекс отсутствует, фовеальный рефлекс нормальный.",
+          path:
+              "https://steamuserimages-a.akamaihd.net/ugc/1691650191459972353/58AD2C7026076D745FC4345D79CA24241C38C045/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false",
+          eye: index % 2 == 0 ? EyeEnum.left : EyeEnum.right,
+          date: DateTime.now(),
+          edits: List.generate(
+            10,
+            (int i) => SnapshotEditListModel(
+              id: i,
+              snapshotId: index,
+              diagnosis: "ЛАСОСЬ",
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -78,7 +112,22 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                   future: _future,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return Container();
+                      _snapshots = snapshot.data!;
+
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 5,
+                            ),
+                        itemCount: _snapshots.length,
+                        controller: _scrollController,
+                        itemBuilder:
+                            (context, index) => PatientSnapshotTileWidget(
+                              snapshot: _snapshots[index],
+                            ),
+                      );
                     }
                     return GridView.builder(
                       gridDelegate:
@@ -88,7 +137,6 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                             crossAxisSpacing: 5,
                           ),
                       itemCount: 12,
-                      controller: _scrollController,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder:
                           (context, index) => Container(

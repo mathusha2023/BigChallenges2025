@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 
 void showFilterBottomSheet(
   BuildContext context,
-  Function(bool localMale, bool localFemale) setFilters,
+  Function(bool localMale, bool localFemale, int minAge, int maxAge) setFilters,
   bool male,
   bool female,
-  TextEditingController minAgeController,
-  TextEditingController maxAgeController,
+  int minAge,
+  int maxAge,
 ) {
   final theme = Theme.of(context);
   bool localMale = male;
   bool localFemale = female;
+  final TextEditingController minAgeController = TextEditingController(
+    text: minAge.toString(),
+  );
+  final TextEditingController maxAgeController = TextEditingController(
+    text: maxAge.toString(),
+  );
 
   showModalBottomSheet<void>(
     context: context,
@@ -135,7 +141,7 @@ void showFilterBottomSheet(
                             int minAge = int.parse(minAgeController.text);
                             int maxAge = int.parse(maxAgeController.text);
                             if (minAge > maxAge) return;
-                            setFilters(localMale, localFemale);
+                            setFilters(localMale, localFemale, minAge, maxAge);
                             Navigator.pop(context);
                           }
                         },

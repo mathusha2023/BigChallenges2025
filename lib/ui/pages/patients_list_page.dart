@@ -17,17 +17,16 @@ class _PatientsListPageState extends State<PatientsListPage> {
   static Future? _future;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _minAgeController = TextEditingController();
-  final TextEditingController _maxAgeController = TextEditingController();
   bool _showHeader = true;
   double _lastScrollOffset = 0;
   List<PatientListModel> _patients = [];
   String _search = "";
+
+  // Фильтры
   int _minAge = 0;
   int _maxAge = 999;
-
-  bool male = true;
-  bool female = true;
+  bool _male = true;
+  bool _female = true;
 
   final FocusNode _searchFocusNode = FocusNode(); // Добавляем FocusNode
 
@@ -68,8 +67,6 @@ class _PatientsListPageState extends State<PatientsListPage> {
         _searchPatient("");
       }
     });
-    _minAgeController.text = _minAge.toString();
-    _maxAgeController.text = _maxAge.toString();
   }
 
   @override
@@ -77,8 +74,6 @@ class _PatientsListPageState extends State<PatientsListPage> {
     _scrollController.dispose();
     _searchFocusNode.dispose(); // Не забываем освободить ресурсы
     _searchController.dispose();
-    _maxAgeController.dispose();
-    _minAgeController.dispose();
     super.dispose();
   }
 
@@ -99,10 +94,10 @@ class _PatientsListPageState extends State<PatientsListPage> {
 
   List<PatientListModel> get _filterPatients {
     List allowedGender = [];
-    if (male) {
+    if (_male) {
       allowedGender.add(0);
     }
-    if (female) {
+    if (_female) {
       allowedGender.add(1);
     }
     return _patients
@@ -116,12 +111,12 @@ class _PatientsListPageState extends State<PatientsListPage> {
         .toList();
   }
 
-  void _filter(bool localMale, bool localFemale) {
+  void _filter(bool localMale, bool localFemale, int minAge, int maxAge) {
     setState(() {
-      _minAge = int.parse(_minAgeController.text);
-      _maxAge = int.parse(_maxAgeController.text);
-      male = localMale;
-      female = localFemale;
+      _minAge = minAge;
+      _maxAge = maxAge;
+      _male = localMale;
+      _female = localFemale;
     });
   }
 
@@ -201,10 +196,10 @@ class _PatientsListPageState extends State<PatientsListPage> {
                           () => showFilterBottomSheet(
                             context,
                             _filter,
-                            male,
-                            female,
-                            _minAgeController,
-                            _maxAgeController,
+                            _male,
+                            _female,
+                            _minAge,
+                            _maxAge,
                           ),
                       child: Row(
                         children: [

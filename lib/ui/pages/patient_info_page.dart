@@ -4,6 +4,7 @@ import 'package:bc_phthalmoscopy/data/snapshot_edit_list_model.dart';
 import 'package:bc_phthalmoscopy/data/snapshot_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_snapshot_tile_widget.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snapshot_info_bottom_sheet.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/user_profile_block_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -124,8 +125,16 @@ class _PatientInfoPageState extends State<PatientInfoPage> {
                         itemCount: _snapshots.length,
                         controller: _scrollController,
                         itemBuilder:
-                            (context, index) => PatientSnapshotTileWidget(
-                              snapshot: _snapshots[index],
+                            (context, index) => GestureDetector(
+                              onTap:
+                                  () => showSnapshotInfoBottomSheet(
+                                    context,
+                                    patient,
+                                    _snapshots[index],
+                                  ),
+                              child: PatientSnapshotTileWidget(
+                                snapshot: _snapshots[index],
+                              ),
                             ),
                       );
                     }

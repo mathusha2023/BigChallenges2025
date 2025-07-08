@@ -103,7 +103,9 @@ class _PatientsListPageState extends State<PatientsListPage> {
     return _patients
         .where(
           (element) =>
-              element.name.contains(_search) &&
+              element.name.toLowerCase().contains(
+                _search.trim().toLowerCase(),
+              ) &&
               allowedGender.contains(element.gender) &&
               element.age >= _minAge &&
               element.age <= _maxAge,

@@ -3,13 +3,28 @@ import 'package:bc_phthalmoscopy/ui/widgets/patient_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class DeviceListTileWidget extends StatelessWidget {
-  const DeviceListTileWidget({super.key, required this.device});
+  const DeviceListTileWidget({
+    super.key,
+    required this.device,
+    required this.isActive,
+  });
 
   final DeviceListModel device;
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape:
+          isActive
+              ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                side: BorderSide(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 3,
+                ),
+              )
+              : Theme.of(context).cardTheme.shape,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
         child: SizedBox(

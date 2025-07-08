@@ -1,5 +1,6 @@
 class DeviceListModel {
   final String deviceId;
+  bool isActive;
 
-  DeviceListModel({required this.deviceId});
+  DeviceListModel({required this.deviceId, required this.isActive});
 }

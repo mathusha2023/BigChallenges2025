@@ -16,6 +16,7 @@ class DevicesListPage extends StatefulWidget {
 class _DevicesListPageState extends State<DevicesListPage> {
   static Future<List<DeviceListModel>>? _future;
   List<DeviceListModel> _devices = [];
+  String? _selectedDeviceId; // Храним ID выбранного устройства
 
   @override
   void initState() {
@@ -27,15 +28,28 @@ class _DevicesListPageState extends State<DevicesListPage> {
     _future = Future.delayed(
       Duration(seconds: 1),
       () => List.generate(
-        1,
-        (index) => DeviceListModel(deviceId: "1281928371$index"),
+        5,
+        (index) => DeviceListModel(
+          deviceId: "1281928371$index",
+          isActive: index == 2, // По умолчанию активен третий элемент
+        ),
       ),
     );
   }
 
   void _removeDevice(int index) {
     setState(() {
+      // Если удаляем выбранное устройство, сбрасываем выбор
+      if (_devices[index].deviceId == _selectedDeviceId) {
+        _selectedDeviceId = null;
+      }
       _devices.removeAt(index);
+    });
+  }
+
+  void _selectDevice(String deviceId) {
+    setState(() {
+      _selectedDeviceId = deviceId;
     });
   }
 
@@ -79,7 +93,13 @@ class _DevicesListPageState extends State<DevicesListPage> {
                       onDismissed: (direction) {
                         _removeDevice(index);
                       },
-                      child: DeviceListTileWidget(device: device),
+                      child: GestureDetector(
+                        onTap: () => _selectDevice(device.deviceId),
+                        child: DeviceListTileWidget(
+                          device: device,
+                          isActive: device.deviceId == _selectedDeviceId,
+                        ),
+                      ),
                     );
                   },
                 );

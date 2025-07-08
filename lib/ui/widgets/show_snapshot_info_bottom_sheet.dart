@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bc_phthalmoscopy/data/eye_enum.dart';
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
 import 'package:bc_phthalmoscopy/data/snapshot_list_model.dart';

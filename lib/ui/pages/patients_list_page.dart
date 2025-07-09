@@ -166,7 +166,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            context.go("/profile");
+                            context.go("/patients_list/profile");
                           },
                           child: CircleAvatar(
                             radius: 20,
@@ -275,7 +275,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
         ),
         floatingActionButton: MyFloatingButton(
           onPressed: () {
-            context.go("/add_patient");
+            context.go("/patients_list/add_patient");
           },
         ),
       ),

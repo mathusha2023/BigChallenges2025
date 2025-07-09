@@ -12,7 +12,7 @@ class PatientListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.go("/patients/${patient.id}", extra: patient);
+        context.go("/patients_list/patients/${patient.id}", extra: patient);
       },
       child: Card(
         child: Padding(

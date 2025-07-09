@@ -111,7 +111,7 @@ class _DevicesListPageState extends State<DevicesListPage> {
       ),
       floatingActionButton: MyFloatingButton(
         onPressed: () {
-          context.go("/profile/devices_list/add_device");
+          context.go("/patients_list/profile/devices_list/add_device");
         },
       ),
     );

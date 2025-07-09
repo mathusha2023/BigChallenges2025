@@ -83,7 +83,9 @@ class _AddDevicePageState extends State<AddDevicePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.go("/profile/devices_list/add_device/scan_qr");
+                      context.go(
+                        "/patients_list/profile/devices_list/add_device/scan_qr",
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(13),

@@ -4,6 +4,7 @@ import 'package:bc_phthalmoscopy/ui/pages/add_patient_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/devices_list_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/home_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/patient_info_page.dart';
+import 'package:bc_phthalmoscopy/ui/pages/patients_list_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/profile_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/scan_qr_page.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +12,10 @@ import 'package:go_router/go_router.dart';
 // GoRouter configuration
 final router = GoRouter(
   routes: [
+    GoRoute(path: "/", builder: (context, state) => HomePage()),
     GoRoute(
-      path: '/',
-      builder: (context, state) => HomePage(),
+      path: '/patients_list',
+      builder: (context, state) => PatientsListPage(),
       routes: [
         GoRoute(
           path: "/add_patient",

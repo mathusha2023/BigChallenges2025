@@ -23,7 +23,10 @@ class _ScanQrPageState extends State<ScanQrPage> {
           onDetect: (result) {
             String code = result.barcodes.first.rawValue ?? "";
             print("From scanner:$code");
-            context.go("/profile/devices_list/add_device", extra: code);
+            context.go(
+              "/patients_list/profile/devices_list/add_device",
+              extra: code,
+            );
           },
         ),
 

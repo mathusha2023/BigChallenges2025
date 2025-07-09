@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    (snapshot.hasData ? snapshot.data as String : "Офтальмолог")
+                    (snapshot.hasData ? snapshot.data as String : "")
                         .truncateToWords(2),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge,

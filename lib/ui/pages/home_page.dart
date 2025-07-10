@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
   // }
 
   void login() {
-    Keycloak().isTokenExpired().then((value) {
+    Keycloak.instance.isTokenExpired().then((value) {
       if (value) {
-        Keycloak().login().then((value) {
+        Keycloak.instance.login().then((value) {
           if (value == null) return;
           Future.delayed(
             Duration(seconds: 1),

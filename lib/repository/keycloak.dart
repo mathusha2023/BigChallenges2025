@@ -11,6 +11,7 @@ class Keycloak {
   final String clientId = dotenv.env['CLIENT_ID'] ?? '';
   final String clientSecret = dotenv.env['CLIENT_SECRET'] ?? '';
   final storage = const FlutterSecureStorage();
+  static final instance = Keycloak();
 
   Future<UserInfo?> login() async {
     try {

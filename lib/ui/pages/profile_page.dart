@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     image: "assets/images/logout_icon.png",
                     title: "Выход",
                     onTap: () async {
-                      Keycloak()
+                      Keycloak.instance
                           .logout()
                           .then((value) {
                             if (value) {

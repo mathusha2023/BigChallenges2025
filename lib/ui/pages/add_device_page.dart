@@ -26,8 +26,6 @@ class _AddDevicePageState extends State<AddDevicePage> {
 
     if (widget.code != null) _codeController.text = widget.code!;
 
-    print("Controller: ${_codeController.text}");
-
     return Scaffold(
       appBar: MyAppBar(),
       body: Padding(

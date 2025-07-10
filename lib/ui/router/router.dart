@@ -40,7 +40,6 @@ final router = GoRouter(
                   path: "/add_device",
                   builder: (context, state) {
                     final code = state.extra as String?;
-                    print("From router: $code");
                     return AddDevicePage(code: code);
                   },
                   routes: [

@@ -10,3 +10,13 @@ void showSuccessSnackBar(BuildContext context, String message) {
     duration: const Duration(seconds: 2),
   );
 }
+
+void showErrorSnackBar(BuildContext context, String message) {
+  CustomSnackbar.show(
+    context,
+    message: message,
+    backgroundColor: Theme.of(context).colorScheme.secondary,
+    icon: Icons.error,
+    duration: const Duration(seconds: 2),
+  );
+}

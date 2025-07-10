@@ -1,5 +1,6 @@
 import 'package:bc_phthalmoscopy/ui/widgets/dark_qr_code_background.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -20,9 +21,17 @@ class _ScanQrPageState extends State<ScanQrPage> {
       children: [
         // 1. Сканер на весь экран
         MobileScanner(
+          errorBuilder: (context, error) {
+            Future.delayed(Duration(seconds: 1), () {
+              if (context.mounted) {
+                showErrorSnackBar(context, "Ошибка сканирования");
+                context.pop();
+              }
+            });
+            return SizedBox();
+          },
           onDetect: (result) {
             String code = result.barcodes.first.rawValue ?? "";
-            print("From scanner:$code");
             context.go(
               "/patients_list/profile/devices_list/add_device",
               extra: code,

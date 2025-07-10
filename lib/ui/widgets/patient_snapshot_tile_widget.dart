@@ -1,6 +1,5 @@
 import 'package:bc_phthalmoscopy/data/eye_enum.dart';
 import 'package:bc_phthalmoscopy/data/snapshot_list_model.dart';
-import 'package:bc_phthalmoscopy/ui/widgets/show_snapshot_info_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

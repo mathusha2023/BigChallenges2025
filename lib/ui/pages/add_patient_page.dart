@@ -74,13 +74,11 @@ class _AddPatientPageState extends State<AddPatientPage> {
                 ),
               ],
               onChanged: (value) {
-                setState() {
-                  if (value == "male") {
-                    _selectedGender = 0;
-                  }
-                  if (value == "female") {
-                    _selectedGender = 1;
-                  }
+                if (value == "male") {
+                  _selectedGender = 0;
+                }
+                if (value == "female") {
+                  _selectedGender = 1;
                 }
               },
               hint: const Text('Выберите пол'),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  MyAppBar({super.key, this.title, this.isTransparent = false, this.textColor});
+  const MyAppBar({
+    super.key,
+    this.title,
+    this.isTransparent = false,
+    this.textColor,
+  });
 
-  String? title;
-  bool isTransparent = false;
-  Color? textColor;
+  final String? title;
+  final bool isTransparent;
+  final Color? textColor;
 
   @override
   Size get preferredSize => Size.fromHeight(56); // or any other size you want

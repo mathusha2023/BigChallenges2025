@@ -3,6 +3,7 @@ import 'package:bc_phthalmoscopy/ui/widgets/accept_delete_dialog.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/device_list_tile_widget.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_floating_button.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,6 +46,7 @@ class _DevicesListPageState extends State<DevicesListPage> {
       }
       _devices.removeAt(index);
     });
+    showSuccessSnackBar(context, "Удаление устройства успешно!");
   }
 
   void _selectDevice(String deviceId) {

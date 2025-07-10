@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  apptomate_custom_snackbar:
+    dependency: "direct main"
+    description:
+      name: apptomate_custom_snackbar
+      sha256: "2666783c25294e0c20e5dc45ec358f1b6b78bb7107217dd17b9b906b765bf505"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   archive:
     dependency: transitive
     description:

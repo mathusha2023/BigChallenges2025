@@ -3,6 +3,7 @@ import 'package:bc_phthalmoscopy/ui/widgets/accept_delete_dialog.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/show_filter_bottom_sheet.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_floating_button.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_list_tile_widget.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/material.dart' hide showBottomSheet;
 import 'package:go_router/go_router.dart';
 
@@ -84,6 +85,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
         setState(() => _showHeader = true);
       }
     });
+    showSuccessSnackBar(context, "Удаление пациента успешно!");
   }
 
   void _searchPatient(value) {

@@ -12,12 +12,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    Keycloak().login().then((value) {
-      Future.delayed(
-        Duration(seconds: 1),
-      ).then((value) => navigateToMainScreen());
-    });
     super.initState();
+    // _revertProgressIndicator();
+    login();
+  }
+
+  // void _revertProgressIndicator() {
+  //   _showLoginButton = false;
+  //   _future = Future.delayed(Duration(seconds: 5), () {
+  //     _showLoginButton = true;
+  //   });
+  //   setState(() {});
+  // }
+
+  void login() {
+    Keycloak().isTokenExpired().then((value) {
+      if (value) {
+        Keycloak().login().then((value) {
+          if (value == null) return;
+          Future.delayed(
+            Duration(seconds: 1),
+          ).then((value) => navigateToMainScreen());
+        });
+      } else {
+        Future.delayed(
+          Duration(seconds: 1),
+        ).then((value) => navigateToMainScreen());
+      }
+    });
   }
 
   void navigateToMainScreen() {
@@ -26,8 +48,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // bool _showLoginButton = false;
+  // Future? _future;
+
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   body: FutureBuilder(
+    //     future: _future,
+    //     builder: (context, snapshot) {
+    //       return Center(
+    //         child:
+    //             _showLoginButton
+    //                 ? ElevatedButton(
+    //                   onPressed: () {
+    //                     _revertProgressIndicator();
+    //                     login();
+    //                   },
+    //                   child: Text(
+    //                     "Login",
+    //                     style: Theme.of(context).textTheme.displaySmall,
+    //                   ),
+    //                 )
+    //                 : CircularProgressIndicator(),
+    //       );
+    //     },
+    //   ),
+    // );
+
     return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

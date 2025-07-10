@@ -15,11 +15,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Future? _future;
+  static String userName = "";
 
   @override
   void initState() {
     super.initState();
-    _future = FlutterSecureStorage().read(key: "user_name");
+    if (userName.isEmpty) {
+      _future = FlutterSecureStorage().read(key: "user_name");
+    }
   }
 
   @override
@@ -32,6 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: FutureBuilder(
             future: _future,
             builder: (context, snapshot) {
+              if (snapshot.hasData && userName.isEmpty) {
+                userName = snapshot.data as String;
+              }
               return Column(
                 children: [
                   CircleAvatar(
@@ -42,8 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    (snapshot.hasData ? snapshot.data as String : "")
-                        .truncateToWords(2),
+                    userName.truncateToWords(2),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
@@ -58,9 +63,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ProfileTileWidget(
                     image: "assets/images/logout_icon.png",
                     title: "Выход",
-                    onTap: () {
-                      Keycloak().logout();
-                      context.replace("/");
+                    onTap: () async {
+                      Keycloak()
+                          .logout()
+                          .then((value) {
+                            if (value) {
+                              userName = "";
+                              if (context.mounted) {
+                                context.replace("/");
+                              }
+                            }
+                          })
+                          .onError((_, _) {});
                     },
                   ),
                 ],

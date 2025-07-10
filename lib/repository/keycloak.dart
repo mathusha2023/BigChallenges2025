@@ -13,46 +13,51 @@ class Keycloak {
   final storage = const FlutterSecureStorage();
 
   Future<UserInfo?> login() async {
-    var issuer = await Issuer.discover(Uri.parse("$baseUrl/realms/$realm"));
+    try {
+      var issuer = await Issuer.discover(Uri.parse("$baseUrl/realms/$realm"));
 
-    var client = Client(issuer, clientId, clientSecret: clientSecret);
+      var client = Client(issuer, clientId, clientSecret: clientSecret);
 
-    var authenticator = Authenticator(
-      client,
-      scopes: ['openid'],
-      redirectMessage: "",
-      port: 4000,
-      redirectUri: Uri.parse("http://localhost:4000"),
-      urlLancher: (url) async {
-        Uri uri = Uri.parse(url);
-        if (await canLaunchUrl(uri)) {
-          await launchUrl(uri, mode: LaunchMode.inAppWebView);
-        }
-      },
-    );
-    var credentials = await authenticator.authorize();
+      var authenticator = Authenticator(
+        client,
+        scopes: ['openid'],
+        redirectMessage: "",
+        port: 4000,
+        redirectUri: Uri.parse("http://localhost:4000"),
+        urlLancher: (url) async {
+          Uri uri = Uri.parse(url);
+          if (await canLaunchUrl(uri)) {
+            await launchUrl(uri, mode: LaunchMode.inAppWebView);
+          }
+        },
+      );
+      var credentials = await authenticator.authorize();
 
-    await closeInAppWebView();
+      await closeInAppWebView();
 
-    var tokenInfo = await credentials.getTokenResponse();
+      var tokenInfo = await credentials.getTokenResponse();
 
-    var userInfo = await credentials.getUserInfo();
+      var userInfo = await credentials.getUserInfo();
 
-    await storage.write(key: "access_token", value: tokenInfo.accessToken);
-    await storage.write(key: "refresh_token", value: tokenInfo.refreshToken);
-    await storage.write(
-      key: "expires_in",
-      value: tokenInfo.expiresAt?.millisecondsSinceEpoch.toString(),
-    );
+      await storage.write(key: "access_token", value: tokenInfo.accessToken);
+      await storage.write(key: "refresh_token", value: tokenInfo.refreshToken);
+      await storage.write(
+        key: "expires_in",
+        value: tokenInfo.expiresAt?.millisecondsSinceEpoch.toString(),
+      );
 
-    await storage.write(
-      key: "logout_uri",
-      value: credentials.generateLogoutUrl().toString(),
-    );
+      await storage.write(
+        key: "logout_uri",
+        value: credentials.generateLogoutUrl().toString(),
+      );
 
-    await storage.write(key: "user_id", value: userInfo.subject);
-    await storage.write(key: "user_name", value: userInfo.name);
-    return userInfo;
+      await storage.write(key: "user_id", value: userInfo.subject);
+      await storage.write(key: "user_name", value: userInfo.name);
+      return userInfo;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   Future<void> refreshToken() async {
@@ -87,15 +92,21 @@ class Keycloak {
     return DateTime.now().millisecondsSinceEpoch >= expiresIn;
   }
 
-  void logout() async {
+  Future<bool> logout() async {
     final url = await storage.read(key: "logout_uri");
     Uri uri = Uri.parse(
       url ?? "$baseUrl/realms/$realm/protocol/openid-connect/logout",
     );
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.inAppWebView);
-      await closeInAppWebView();
-      await storage.deleteAll();
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.inAppWebView);
+        await closeInAppWebView();
+        await storage.deleteAll();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 }

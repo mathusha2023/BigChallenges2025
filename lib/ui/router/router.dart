@@ -1,4 +1,3 @@
-import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
 import 'package:bc_phthalmoscopy/ui/pages/add_device_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/add_patient_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/devices_list_page.dart';
@@ -7,6 +6,7 @@ import 'package:bc_phthalmoscopy/ui/pages/patient_info_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/patients_list_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/profile_page.dart';
 import 'package:bc_phthalmoscopy/ui/pages/scan_qr_page.dart';
+import 'package:bc_phthalmoscopy/ui/router/extra_data_model.dart';
 import 'package:go_router/go_router.dart';
 
 // GoRouter configuration
@@ -24,8 +24,8 @@ final router = GoRouter(
         GoRoute(
           path: '/patients/:patientId',
           builder: (context, state) {
-            final patient = state.extra as PatientListModel;
-            return PatientInfoPage(patient: patient);
+            final extraData = state.extra as ExtraDataModel;
+            return PatientInfoPage(patient: extraData.patient!);
           },
         ),
         GoRoute(

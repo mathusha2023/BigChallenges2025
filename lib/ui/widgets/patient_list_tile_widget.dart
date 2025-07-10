@@ -1,4 +1,5 @@
 import 'package:bc_phthalmoscopy/data/patient_list_model.dart';
+import 'package:bc_phthalmoscopy/ui/router/extra_data_model.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/patient_icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,10 @@ class PatientListTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.go("/patients_list/patients/${patient.id}", extra: patient);
+        context.go(
+          "/patients_list/patients/${patient.id}",
+          extra: ExtraDataModel(patient: patient),
+        );
       },
       child: Card(
         child: Padding(

@@ -1,22 +1,20 @@
 import 'package:apptomate_custom_snackbar/apptomate_custom_snackbar.dart';
 import 'package:flutter/material.dart';
 
-void showSuccessSnackBar(BuildContext context, String message) {
+void _showSnackbar(BuildContext context, String message, IconData icon) {
   CustomSnackbar.show(
     context,
     message: message,
     backgroundColor: Theme.of(context).colorScheme.secondary,
-    icon: Icons.check_circle,
+    icon: icon,
     duration: const Duration(seconds: 2),
   );
 }
 
+void showSuccessSnackBar(BuildContext context, String message) {
+  _showSnackbar(context, message, Icons.check_circle);
+}
+
 void showErrorSnackBar(BuildContext context, String message) {
-  CustomSnackbar.show(
-    context,
-    message: message,
-    backgroundColor: Theme.of(context).colorScheme.secondary,
-    icon: Icons.error,
-    duration: const Duration(seconds: 2),
-  );
+  _showSnackbar(context, message, Icons.error);
 }

@@ -28,11 +28,19 @@ class _HomePageState extends State<HomePage> {
   void login() {
     Keycloak.instance.isTokenExpired().then((value) {
       if (value) {
-        Keycloak.instance.login().then((value) {
-          if (value == null) return;
-          Future.delayed(
-            Duration(seconds: 1),
-          ).then((value) => navigateToMainScreen());
+        Keycloak.instance.refreshToken().then((value) {
+          if (value) {
+            Future.delayed(
+              Duration(seconds: 1),
+            ).then((value) => navigateToMainScreen());
+          } else {
+            Keycloak.instance.login().then((value) {
+              if (value == null) return;
+              Future.delayed(
+                Duration(seconds: 1),
+              ).then((value) => navigateToMainScreen());
+            });
+          }
         });
       } else {
         Future.delayed(

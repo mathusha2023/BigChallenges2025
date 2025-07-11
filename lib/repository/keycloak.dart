@@ -61,9 +61,9 @@ class Keycloak {
     }
   }
 
-  Future<void> refreshToken() async {
+  Future<bool> refreshToken() async {
     final refreshToken = await storage.read(key: "refresh_token");
-    if (refreshToken == null) return;
+    if (refreshToken == null) return false;
 
     final response = await http.post(
       Uri.parse("$baseUrl/realms/$realm/protocol/openid-connect/token"),
@@ -83,7 +83,9 @@ class Keycloak {
         key: "expires_in",
         value: data["expires_in"].toString(),
       );
+      return true;
     }
+    return false;
   }
 
   Future<bool> isTokenExpired() async {

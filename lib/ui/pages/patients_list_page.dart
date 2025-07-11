@@ -62,12 +62,6 @@ class _PatientsListPageState extends State<PatientsListPage> {
         setState(() => _showHeader = true);
       }
     });
-
-    _searchController.addListener(() {
-      if (_searchController.text.isEmpty) {
-        _searchPatient("");
-      }
-    });
   }
 
   @override
@@ -149,15 +143,19 @@ class _PatientsListPageState extends State<PatientsListPage> {
                           width: MediaQuery.of(context).size.width * 0.75,
                           child: TextField(
                             controller: _searchController,
-                            onSubmitted: _searchPatient,
+                            onChanged: _searchPatient,
                             style: theme.textTheme.bodyMedium,
                             decoration: InputDecoration(
-                              prefixIcon: GestureDetector(
-                                onTap:
-                                    () =>
-                                        _searchPatient(_searchController.text),
-                                child: Icon(Icons.search, size: 20),
-                              ),
+                              prefixIcon:
+                                  _search.isEmpty
+                                      ? Icon(Icons.search, size: 20)
+                                      : GestureDetector(
+                                        onTap: () {
+                                          _searchController.clear();
+                                          _searchPatient("");
+                                        },
+                                        child: Icon(Icons.close, size: 20),
+                                      ),
                               hintText: "Поиск пациентов",
                               hintStyle: theme.inputDecorationTheme.hintStyle
                                   ?.copyWith(

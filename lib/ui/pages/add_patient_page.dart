@@ -1,4 +1,5 @@
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bottom_picker/bottom_picker.dart';
@@ -103,11 +104,18 @@ class _AddPatientPageState extends State<AddPatientPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (_nameController.text.isNotEmpty &&
+                  String message = '';
+                  if (_nameController.text.isEmpty) {
+                    message = 'Введите ФИО пациента';
+                  } else if (_dateController.text.isEmpty) {
+                    message = 'Выберите дату рождения пациента';
+                  } else if (_nameController.text.isNotEmpty &&
                       _dateController.text.isNotEmpty) {
                     // Отправка данных на сервер
                     context.pop();
+                    return;
                   }
+                  showErrorSnackBar(context, message);
                 },
 
                 child: Text(

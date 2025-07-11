@@ -1,4 +1,5 @@
 import 'package:bc_phthalmoscopy/repository/keycloak.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,12 +31,18 @@ class _HomePageState extends State<HomePage> {
       if (value) {
         Keycloak.instance.refreshToken().then((value) {
           if (value) {
+            showSuccessSnackBar(context, "Token refreshed");
             Future.delayed(
               Duration(seconds: 1),
             ).then((value) => navigateToMainScreen());
           } else {
+            showErrorSnackBar(context, "Refresh token error");
             Keycloak.instance.login().then((value) {
-              if (value == null) return;
+              if (value == null) {
+                return showErrorSnackBar(context, "Login error");
+              }
+              showSuccessSnackBar(context, "Login successful");
+
               Future.delayed(
                 Duration(seconds: 1),
               ).then((value) => navigateToMainScreen());
@@ -43,6 +50,7 @@ class _HomePageState extends State<HomePage> {
           }
         });
       } else {
+        showSuccessSnackBar(context, "Token is not expired");
         Future.delayed(
           Duration(seconds: 1),
         ).then((value) => navigateToMainScreen());

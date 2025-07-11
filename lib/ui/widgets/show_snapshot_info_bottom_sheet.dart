@@ -213,7 +213,7 @@ void showSnapshotInfoBottomSheet(
                           onPressed:
                               editDiagnosis
                                   ? () {
-                                    if (controller.text.isNotEmpty) {
+                                    if (controller.text.trim().isNotEmpty) {
                                       diagnosis = controller.text;
                                       toggleEdit();
                                     }

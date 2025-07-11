@@ -105,7 +105,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
               child: ElevatedButton(
                 onPressed: () {
                   String message = '';
-                  if (_nameController.text.isEmpty) {
+                  if (_nameController.text.trim().isEmpty) {
                     message = 'Введите ФИО пациента';
                   } else if (_dateController.text.isEmpty) {
                     message = 'Выберите дату рождения пациента';

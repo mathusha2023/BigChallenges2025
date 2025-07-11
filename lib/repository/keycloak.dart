@@ -72,9 +72,9 @@ class Keycloak {
         "grant_type": "refresh_token",
         "client_id": clientId,
         "refresh_token": refreshToken,
+        "client_secret": clientSecret,
       },
     );
-
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       await storage.write(key: "access_token", value: data["access_token"]);

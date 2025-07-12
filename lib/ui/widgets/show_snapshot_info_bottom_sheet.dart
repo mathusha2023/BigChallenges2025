@@ -185,20 +185,25 @@ void showSnapshotInfoBottomSheet(
                     duration: const Duration(milliseconds: duration),
                     child: SizedBox(height: editDiagnosis ? 10 : 0),
                   ),
-                  TextFormField(
-                    controller: controller,
-                    style: theme.textTheme.bodySmall,
-                    enabled: editDiagnosis,
-                    maxLines: null,
-                    focusNode: inputNode,
-                    autofocus: editDiagnosis,
-                    decoration:
-                        editDiagnosis
-                            ? InputDecoration(hintText: "Введите диагноз")
-                            : InputDecoration(
-                              filled: false,
-                              contentPadding: EdgeInsets.all(0),
-                            ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    child: TextFormField(
+                      controller: controller,
+                      style: theme.textTheme.bodySmall,
+                      readOnly: !editDiagnosis,
+                      maxLines: null,
+                      focusNode: inputNode,
+                      autofocus: editDiagnosis,
+                      decoration:
+                          editDiagnosis
+                              ? InputDecoration(hintText: "Введите диагноз")
+                              : InputDecoration(
+                                filled: false,
+                                contentPadding: EdgeInsets.all(0),
+                              ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   AnimatedSize(

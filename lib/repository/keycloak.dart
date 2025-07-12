@@ -43,7 +43,7 @@ class Keycloak {
       await storage.write(key: "access_token", value: tokenInfo.accessToken);
       await storage.write(key: "refresh_token", value: tokenInfo.refreshToken);
       await storage.write(
-        key: "expires_in",
+        key: "expires_at",
         value: tokenInfo.expiresAt?.millisecondsSinceEpoch.toString(),
       );
 
@@ -77,19 +77,23 @@ class Keycloak {
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
+      final String expiresInStr = data["expires_in"].toString();
+      final expiresIn = int.tryParse(expiresInStr) ?? 0; // seconds
+      await storage.write(
+        key: "expires_at",
+        value:
+            (DateTime.now().millisecondsSinceEpoch + expiresIn * 1000)
+                .toString(),
+      );
       await storage.write(key: "access_token", value: data["access_token"]);
       await storage.write(key: "refresh_token", value: data["refresh_token"]);
-      await storage.write(
-        key: "expires_in",
-        value: data["expires_in"].toString(),
-      );
       return true;
     }
     return false;
   }
 
   Future<bool> isTokenExpired() async {
-    final expiresInStr = await storage.read(key: "expires_in");
+    final expiresInStr = await storage.read(key: "expires_at");
     if (expiresInStr == null) return true;
     final expiresIn = int.tryParse(expiresInStr) ?? 0;
     return DateTime.now().millisecondsSinceEpoch >= expiresIn;

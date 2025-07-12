@@ -39,7 +39,9 @@ class _HomePageState extends State<HomePage> {
             showErrorSnackBar(context, "Refresh token error");
             Keycloak.instance.login().then((value) {
               if (value == null) {
-                return showErrorSnackBar(context, "Login error");
+                showErrorSnackBar(context, "Login error");
+                Future.delayed(Duration(seconds: 5), login);
+                return;
               }
               showSuccessSnackBar(context, "Login successful");
 

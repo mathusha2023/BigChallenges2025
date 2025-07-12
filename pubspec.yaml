@@ -49,6 +49,7 @@ dependencies:
   openid_client: ^0.4.9
   url_launcher: ^6.3.1
   apptomate_custom_snackbar: ^0.0.2
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:

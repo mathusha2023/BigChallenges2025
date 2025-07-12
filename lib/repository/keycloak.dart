@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -100,13 +101,20 @@ class Keycloak {
   }
 
   Future<bool> logout() async {
+    final hasInternet = await _checkInternetConnection();
+
+    if (!hasInternet) {
+      return false;
+    }
+
     final url = await storage.read(key: "logout_uri");
     Uri uri = Uri.parse(
       url ?? "$baseUrl/realms/$realm/protocol/openid-connect/logout",
     );
     try {
       if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.inAppWebView);
+        final bool result = await launchUrl(uri, mode: LaunchMode.inAppWebView);
+        if (!result) return false;
         await closeInAppWebView();
         await storage.deleteAll();
         return true;
@@ -114,6 +122,18 @@ class Keycloak {
       return false;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<bool> _checkInternetConnection() async {
+    try {
+      // Используем пакет connectivity_plus для проверки соединения
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      print("connectivityResult: $connectivityResult");
+      return connectivityResult.isNotEmpty &&
+          !connectivityResult.contains(ConnectivityResult.none);
+    } catch (e) {
+      return false; // Если проверка не удалась, считаем что интернета нет
     }
   }
 }

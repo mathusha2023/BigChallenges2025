@@ -2,6 +2,7 @@ import 'package:bc_phthalmoscopy/common/extensions/string_extensions.dart';
 import 'package:bc_phthalmoscopy/repository/keycloak.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/my_app_bar.dart';
 import 'package:bc_phthalmoscopy/ui/widgets/profile_tile_widget.dart';
+import 'package:bc_phthalmoscopy/ui/widgets/show_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -64,17 +65,21 @@ class _ProfilePageState extends State<ProfilePage> {
                     image: "assets/images/logout_icon.png",
                     title: "Выход",
                     onTap: () async {
-                      Keycloak.instance
-                          .logout()
-                          .then((value) {
-                            if (value) {
-                              userName = "";
-                              if (context.mounted) {
-                                context.replace("/");
-                              }
-                            }
-                          })
-                          .onError((_, _) {});
+                      Keycloak.instance.logout().then((value) {
+                        if (value) {
+                          userName = "";
+                          if (context.mounted) {
+                            context.replace("/");
+                          }
+                        } else {
+                          if (context.mounted) {
+                            showErrorSnackBar(
+                              context,
+                              "Ошибка выхода из аккаунта!",
+                            );
+                          }
+                        }
+                      });
                     },
                   ),
                 ],
